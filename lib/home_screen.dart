@@ -23,9 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
       for (var file in result.files) {
         _streamController.sink.add(file);
       }
-      setState(() {
-        uploadedImages.addAll(result.files);
-      });
     } else {}
   }
 
@@ -45,7 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: StreamBuilder<PlatformFile>(
         stream: _streamController.stream,
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
+          if (snapshot.hasData) {
+            uploadedImages.add(snapshot.data!);
+          }
+          if (uploadedImages.isEmpty) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
